@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script th:src="@{/static/js/jquery-1.9.1.min.js}"></script>
+</head>
+<body>
+    <form id="login" method="post">
+        用户名： <input type="text" name="userName" id="userName"> <br/>
+        密码：<input type="password" name="passWord" id="passWord"><br/>
+        <button type="button" id="loginBtn">登录</button>
+    </form>
+<script>
+    $(function () {
+        $("#loginBtn").click(function () {
+            $.ajax({
+                type: "POST",
+                url:"/blog-web/login/checkLogin",
+                data:$('#login').serialize(),
+                async: false,
+                error: function(request) {  //失败的话
+                    alert("Connection error");
+                },
+                success: function(data) {  //成功
+                    var json=eval(data);
+                    if(json.code==0){
+                        alert("成功登录，获取data跳转地址");
+                    }else{
+                        alert(json.msg);
+                    }
+                }
+            });
+
+        });
+    });
+</script>
+</body>
+</html>

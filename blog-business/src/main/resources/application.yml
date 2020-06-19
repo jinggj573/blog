@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring?useSSL=false&characterEncoding=utf8
+    username: root
+    password: admin
+server:
+  servlet:
+    context-path: /blog-business
+mybatis-plus:
+  mapper-locations: classpath*:com/insit/mark/blog/**/**/mapping/*Mapper.xml, classpath*:com/insit/mark/blog/business/mapper/*Mapper.xml
+  type-aliases-package: com.insit.mark.blog.common.persistence.model
