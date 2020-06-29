@@ -1,24 +1,20 @@
 package com.insit.mark.blog.web.controller;
 
 import com.insit.mark.blog.common.framework.web.CommonResult;
-import com.insit.mark.blog.web.config.PasswordHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 
 @Api(tags = "LoginController 部分")
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/login")
 public class LoginController {
 
@@ -37,8 +33,9 @@ public class LoginController {
         return modelMap;
     }
 
-    @RequestMapping(value = "/checkLogin")
-    public CommonResult checkLogin(String userName, String passWord){
+    @PostMapping(value = "/checkLogin")
+    @ResponseBody
+    public CommonResult checkLogin(@RequestParam("username") String userName, @RequestParam("password")String passWord){
         UsernamePasswordToken token=new UsernamePasswordToken(userName, passWord);
         Subject subject= SecurityUtils.getSubject();
 
@@ -63,10 +60,18 @@ public class LoginController {
         }
         if(subject.isAuthenticated()){
             log.info("认证成功==>");
-            return new CommonResult(CommonResult.SUCCESS_CODE,null,"认证成功==>");
-        }else{
-            return new CommonResult(CommonResult.SUCCESS_CODE,null,"认证成功==>");
+            return new CommonResult(CommonResult.SUCCESS_CODE,null,"认证成功");
         }
+        return null;
     }
+
+    @ResponseBody
+    @GetMapping("/logout")
+    public CommonResult logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return new CommonResult(CommonResult.SUCCESS_CODE,null,"成功登出");
+    }
+
 
 }

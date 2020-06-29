@@ -58,7 +58,6 @@ public class ShiroRealm extends AuthorizingRealm {
         String password= String.valueOf(token.getPassword());
         User user=  service.findUser(userName);
         if(ObjectUtils.isNull(user)){
-
             throw new UnknownAccountException("用户名或密码错误！");
         }
         if (Constants.blog_USER_STATUS_0.equals(user.getEnable())) {
