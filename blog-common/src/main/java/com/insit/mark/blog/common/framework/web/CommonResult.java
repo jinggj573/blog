@@ -3,11 +3,13 @@ package com.insit.mark.blog.common.framework.web;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author Administrator
  */
 @Data
-public class CommonResult<T> {
+public class CommonResult<T> implements Serializable {
     private Integer code;
     private String msg;
     private T data;
@@ -27,8 +29,14 @@ public class CommonResult<T> {
         this.msg=msg;
     }
 
-
-
+    public CommonResult(Integer code,T data) {
+        this.code=code;
+        this.data=data;
+    }
+    public CommonResult(Integer code,String msg) {
+        this.code=code;
+        this.msg=msg;
+    }
 
 
 }

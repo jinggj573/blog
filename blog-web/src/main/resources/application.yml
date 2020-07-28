@@ -9,16 +9,7 @@ spring:
     url: jdbc:mysql://localhost:3306/spring?useSSL=false&characterEncoding=utf8
     username: root
     password: admin
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    jedis:
-      pool:
-        max-active: 8
-        max-wait: -1
-        max-idle: 8
-        min-idle: 0
-    timeout: 0
-    password:
+  main:
+    allow-bean-definition-overriding: true
 sys:
   path: /

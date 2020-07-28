@@ -1,27 +1,52 @@
 package com.insit.mark.blog.web.controller;
 
+import com.insit.mark.blog.common.business.user.UserService;
+import com.insit.mark.blog.common.constants.Constants;
 import com.insit.mark.blog.common.framework.web.CommonResult;
+import com.insit.mark.blog.common.persistence.model.User;
+import com.insit.mark.blog.common.utils.RedisUtil;
+import com.wf.captcha.SpecCaptcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+
+/**
+ * @author Administrator
+ */
 @Api(tags = "LoginController 部分")
 @Slf4j
 @Controller
 @RequestMapping("/login")
 public class LoginController {
 
+
+    @Autowired
+    UserService userService;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
+
+    @ResponseBody
     @ApiOperation(value = "登录验证",notes = "方法备注？一般写什么啊")
-    @RequestMapping(value = "/checkLogin", method = RequestMethod.GET)
-    public String checkLogin(){
-        return "hello";
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public CommonResult hello(){
+        return new CommonResult<>(CommonResult.SUCCESS_CODE,"hello");
+
     }
 
 
@@ -33,44 +58,56 @@ public class LoginController {
         return modelMap;
     }
 
-    @PostMapping(value = "/checkLogin")
-    @ResponseBody
-    public CommonResult checkLogin(@RequestParam("username") String userName, @RequestParam("password")String passWord){
-        UsernamePasswordToken token=new UsernamePasswordToken(userName, passWord);
-        Subject subject= SecurityUtils.getSubject();
 
-        try {
-            subject.login(token);
-            log.info("是否登录==>{}", subject.isAuthenticated());
-        }catch (IncorrectCredentialsException e){
-            log.error("LoginController checkLogin method has exception:{},{}",e.getMessage(),e);
-            return new CommonResult(CommonResult.FAILED_CODE,null,"验证未通过，错误的凭证");
-        }catch (UnknownAccountException e){
-            log.error("LoginController checkLogin method has exception:{},{}",e.getMessage(),e);
-            return new CommonResult(CommonResult.FAILED_CODE,null,"验证未通过，未知账户！");
-        }catch (LockedAccountException e){
-            log.error("LoginController checkLogin method has exception:{},{}",e.getMessage(),e);
-            return new CommonResult(CommonResult.FAILED_CODE,null,"验证未通过，账户锁定！");
-        }catch (ExcessiveAttemptsException e){
-            log.error("LoginController checkLogin method has exception:{},{}",e.getMessage(),e);
-            return new CommonResult(CommonResult.FAILED_CODE,null,"验证未通过，错误次数太多！");
-        }catch (AuthenticationException e){
-            log.error("LoginController checkLogin method has exception:{},{}",e.getMessage(),e);
-            return new CommonResult(CommonResult.FAILED_CODE,null,"验证未通过，用户名、密码不正确！");
-        }
-        if(subject.isAuthenticated()){
-            log.info("认证成功==>");
-            return new CommonResult(CommonResult.SUCCESS_CODE,null,"认证成功");
-        }
-        return null;
+    @GetMapping("/captchaCode/create")
+    @ResponseBody
+    @ApiOperation(value = "生成图形验证码", position = 10)
+    public CommonResult<Map<String, String>> createCaptchaCode() {
+        Map<String, String> result = new HashMap<>();
+        SpecCaptcha specCaptcha = new SpecCaptcha(111, 36, 4);
+        String verCode = specCaptcha.text().toLowerCase();
+        String key = String.valueOf(RandomUtils.nextInt());
+        //RedisUtil.setFromString(Constants.CAPTCHA_CODE_KEY.concat(key), verCode, Constants.CAPTCHA_EXPIRATION);
+        stringRedisTemplate.opsForValue().set(Constants.CAPTCHA_CODE_KEY.concat(key), verCode, Constants.CAPTCHA_EXPIRATION, TimeUnit.SECONDS);
+        result.put("key", key);
+        result.put("image", specCaptcha.toBase64());
+        return new CommonResult<>(CommonResult.SUCCESS_CODE,result);
     }
 
+    @PostMapping(value = "/checkLogin")
     @ResponseBody
+    public CommonResult checkLogin(@RequestParam("username") String userName, @RequestParam("password")String passWord,
+                                   @RequestParam("captchaCode")String captchaCode,@RequestParam("captchaKey")String captchaKey){
+        User user=new User();
+        user.setUsername(userName);
+        user.setPassword(passWord);
+        return userService.login(user,captchaCode,captchaKey);
+    }
+
     @GetMapping("/logout")
+    @ResponseBody
     public CommonResult logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return new CommonResult(CommonResult.SUCCESS_CODE,null,"成功登出");
+        return new CommonResult<>(CommonResult.SUCCESS_CODE,null,"成功登出");
+    }
+
+    /**
+     * 未认证返回前台信息
+     */
+    @RequestMapping("/unAuth")
+    @ResponseBody
+    public CommonResult unAuth() {
+        return new CommonResult<>(CommonResult.SUCCESS_CODE, null,"用户未登录！");
+    }
+
+    /**
+     * 未认证返回前台信息
+     */
+    @RequestMapping("/unAuthorized")
+    @ResponseBody
+    public CommonResult unAuthorized() {
+        return new CommonResult<>(CommonResult.SUCCESS_CODE, null,"用户无权限！");
     }
 
 

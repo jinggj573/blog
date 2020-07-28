@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
             SystemException systemException=(SystemException)exception;
             return new CommonResult(CommonResult.FAILED_CODE,null,systemException.getMessage());
         }else{
-            log.error("未知异常",exception);
+            log.error("Unknown exception",exception);
             return new CommonResult(CommonResult.FAILED_CODE, null,exception.getMessage());
         }
     }

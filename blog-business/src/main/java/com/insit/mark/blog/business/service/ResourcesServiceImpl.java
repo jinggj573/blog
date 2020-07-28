@@ -16,6 +16,7 @@ public class ResourcesServiceImpl implements ResourcesService {
     @Autowired
     SrvResourcesMapper srvResourcesMapper;
 
+    @Override
     public List<Resources> findUserResources(String userName) {
         return srvResourcesMapper.findResource(userName);
     }

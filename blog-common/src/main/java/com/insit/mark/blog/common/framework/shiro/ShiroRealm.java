@@ -1,4 +1,4 @@
-package com.insit.mark.blog.web.shiro;
+package com.insit.mark.blog.common.framework.shiro;
 
 import com.insit.mark.blog.common.business.user.ResourcesService;
 import com.insit.mark.blog.common.business.user.RoleService;

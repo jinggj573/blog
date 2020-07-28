@@ -19,6 +19,7 @@ public class RmiConfig {
     public HttpInvokerServiceExporter remotingService(UserService userService){
         HttpInvokerServiceExporter exporter =new HttpInvokerServiceExporter();
         exporter.setService(userService);
+        /*exporter.setContentType("application/xml");*/
         exporter.setServiceInterface(UserService.class);
         return exporter;
     }
