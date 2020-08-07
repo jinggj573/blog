@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.insit.mark.blog.common.persistence.dao.BgBaseRoleMapper">
+  <resultMap id="BaseResultMap" type="com.insit.mark.blog.common.persistence.model.BgBaseRole">
+    <id column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    role_id, role_name, status, created_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bg_base_role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bg_base_role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.insit.mark.blog.common.persistence.model.BgBaseRole">
+    insert into bg_base_role (role_id, role_name, status, 
+      created_date)
+    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{createdDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.insit.mark.blog.common.persistence.model.BgBaseRole">
+    insert into bg_base_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createdDate != null">
+        created_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.insit.mark.blog.common.persistence.model.BgBaseRole">
+    update bg_base_role
+    <set>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.insit.mark.blog.common.persistence.model.BgBaseRole">
+    update bg_base_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      created_date = #{createdDate,jdbcType=TIMESTAMP}
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+</mapper>

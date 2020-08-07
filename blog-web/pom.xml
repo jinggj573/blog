@@ -13,7 +13,7 @@
     <groupId>com.insit.mark</groupId>
     <artifactId>blog-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>blog-web</name>
 
     <properties>
@@ -24,6 +24,12 @@
         <dependency>
             <groupId>com.insit.mark</groupId>
             <artifactId>blog-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.insit.mark</groupId>
+            <artifactId>blog-business</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -103,6 +109,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>2.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.1.0</version>
         </dependency>
 
         <!--<dependency>
@@ -198,8 +210,17 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
         </plugins>
+
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
 </project>

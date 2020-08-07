@@ -78,18 +78,12 @@ public class ShiroConfig {
         log.info("==========Start ShiroConfiguration shirFilter==========");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-
-
         Map<String, Filter> filtersMap = shiroFilterFactoryBean.getFilters();
         filtersMap.put("authcToken", new JwtAuthFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
-
         filterChainDefinitionMap.put("/login/checkLogin", "anon");
-        filterChainDefinitionMap.put("/remotingUserService", "anon");
         filterChainDefinitionMap.put("/login/captchaCode/create", "anon");
-
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/**", "authcToken");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -122,20 +116,7 @@ public class ShiroConfig {
     public Realm userRealm() {
         /*ShiroRealm userRealm = new ShiroRealm();*/
         JwtRealm userRealm = new JwtRealm();
-
         /*userRealm.setCredentialsMatcher(hashedCredentialsMatcher());*/
-        /**
-         * 6号 问题
-         * org.apache.shiro.authc.AuthenticationException: Authentication failed for token submission [JwtToken(token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTQwMjg5OTcsInVzZXJuYW1lIjoiYWRtaW4ifQ.92XtOpavdAa-CGHCKPHnvnvzHStjZpT_tQPgx41y5i8, id=1, account=admin, password=admin, name=admin)].
-         * Possible unexpected error? (Typical or expected login exceptions should extend from AuthenticationException).
-         *
-         * Caused by: org.apache.shiro.codec.CodecException: The org.apache.shiro.authc.credential.HashedCredentialsMatcher
-         * implementation only supports conversion to byte[] if the source is of type byte[], char[], String, org.apache.shiro.util.ByteSource
-         * File or InputStream.  The instance provided as a method argument is of type [com.insit.mark.blog.common.framework.jwt.JwtToken].
-         * If you would like to convert this argument type to a byte[], you can 1) convert the argument to one of the supported types yourself and
-         * then use that as the method argument or 2)
-         * subclass org.apache.shiro.authc.credential.HashedCredentialsMatcherand override the objectToBytes(Object o) method.
-         */
         userRealm.setCredentialsMatcher(new CredentialsMatcher());
         return userRealm;
     }

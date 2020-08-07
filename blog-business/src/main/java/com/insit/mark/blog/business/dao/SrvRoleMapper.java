@@ -1,13 +1,12 @@
 package com.insit.mark.blog.business.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.insit.mark.blog.common.persistence.model.Role;
+import com.insit.mark.blog.common.persistence.model.BgBaseRole;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface SrvRoleMapper extends BaseMapper<Role> {
+public interface SrvRoleMapper extends BaseMapper<BgBaseRole> {
 
-    List<Role> findRole(@Param("userName") String userName);
-
+    List<BgBaseRole> findRole(@Param("userName") String userName);
 }

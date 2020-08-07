@@ -1,11 +1,7 @@
 package com.insit.mark.blog.business.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.insit.mark.blog.common.persistence.model.User;
+import com.insit.mark.blog.common.persistence.model.BgBaseUser;
 
-/**
- * @author Administrator
- */
-public interface SrvUserMapper extends BaseMapper<User> {
-
+public interface SrvUserMapper extends BaseMapper<BgBaseUser> {
 }

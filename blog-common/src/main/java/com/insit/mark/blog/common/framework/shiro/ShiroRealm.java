@@ -4,12 +4,11 @@ import com.insit.mark.blog.common.business.user.ResourcesService;
 import com.insit.mark.blog.common.business.user.RoleService;
 import com.insit.mark.blog.common.business.user.UserService;
 import com.insit.mark.blog.common.constants.Constants;
-import com.insit.mark.blog.common.persistence.model.Resources;
-import com.insit.mark.blog.common.persistence.model.Role;
-import com.insit.mark.blog.common.persistence.model.User;
+import com.insit.mark.blog.common.persistence.model.BgBaseResource;
+import com.insit.mark.blog.common.persistence.model.BgBaseRole;
+import com.insit.mark.blog.common.persistence.model.BgBaseUser;
 import com.insit.mark.blog.common.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -42,12 +41,12 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        User user= (User) SecurityUtils.getSubject().getPrincipal();
-        List<Resources> resourcesList=resourcesService.findUserResources(user.getUsername());
+        BgBaseUser user= (BgBaseUser) SecurityUtils.getSubject().getPrincipal();
+        List<BgBaseResource> resourcesList=resourcesService.findUserResources(user.getUserName());
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        List<Role> roleList=roleService.findRole(user.getUsername());
-        roleList.forEach(role -> info.addRole(role.getRoledesc()));
-        resourcesList.forEach(resources-> info.addStringPermission(resources.getResurl()));
+        List<BgBaseRole> roleList=roleService.findRole(user.getUserName());
+        roleList.forEach(role -> info.addRole(role.getRoleName()));
+        resourcesList.forEach(resources-> info.addStringPermission(resources.getUrl()));
         return info;
     }
 
@@ -56,15 +55,15 @@ public class ShiroRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken)authenticationToken;
         String userName =token.getUsername();
         String password= String.valueOf(token.getPassword());
-        User user=  service.findUser(userName);
+        BgBaseUser user=  service.findUser(userName);
         if(ObjectUtils.isNull(user)){
             throw new UnknownAccountException("用户名或密码错误！");
         }
-        if (Constants.blog_USER_STATUS_0.equals(user.getEnable())) {
+        if (Constants.blog_USER_STATUS_0.equals(user.getUserStatus())) {
             throw new LockedAccountException("账号已被锁定,请联系管理员！");
         }
 
-        SimpleAuthenticationInfo info=new SimpleAuthenticationInfo(user,user.getPassword(), ByteSource.Util.bytes(password),getName());
+        SimpleAuthenticationInfo info=new SimpleAuthenticationInfo(user,user.getPassWord(), ByteSource.Util.bytes(password),getName());
         return info;
     }
 

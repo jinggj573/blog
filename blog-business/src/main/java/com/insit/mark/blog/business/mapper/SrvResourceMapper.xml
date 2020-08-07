@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.insit.mark.blog.business.dao.SrvResourcesMapper">
+  <resultMap id="BaseResultMap" type="com.insit.mark.blog.common.persistence.model.BgBaseResource">
+    <id column="resource_id" jdbcType="INTEGER" property="resourceId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="created_user" jdbcType="INTEGER" property="createdUser" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    resource_id, type, name, url, desc, parent_id, sort, icon_url, status, created_date, 
+    created_user
+  </sql>
+
+  <select id="findResource" resultMap="BaseResultMap">
+      select bf.* from bg_base_user u
+        INNER JOIN bg_base_user_role ur on u.user_id=ur.user_id
+        INNER JOIN bg_base_role r on ur.role_id=r.role_id
+        INNER JOIN bg_base_role_resource brr on brr.role_id=r.role_id
+        INNER JOIN bg_base_resource bf on brr.resource_id=bf.resource_id
+        WHERE u.user_name=#{userName} and u.user_status=1 and r.status=1 and bf.status=1
+  </select>
+  <select id="getMenuList"  resultMap="BaseResultMap">
+      select bf.* from bg_base_user u
+        INNER JOIN bg_base_user_role ur on u.user_id=ur.user_id
+        INNER JOIN bg_base_role r on ur.role_id=r.role_id
+        INNER JOIN bg_base_role_resource brr on brr.role_id=r.role_id
+        INNER JOIN bg_base_resource bf on brr.resource_id=bf.resource_id
+        WHERE u.user_id=#{userId} and u.user_status=1 and r.status=1 and bf.status=1
+  </select>
+
+</mapper>

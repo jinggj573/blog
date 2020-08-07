@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.insit.mark.blog.common.persistence.dao.BgBaseUserMapper">
+  <resultMap id="BaseResultMap" type="com.insit.mark.blog.common.persistence.model.BgBaseUser">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="redis_id" jdbcType="INTEGER" property="redisId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="staff_no" jdbcType="VARCHAR" property="staffNo" />
+    <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="mp" jdbcType="VARCHAR" property="mp" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="user_src" jdbcType="INTEGER" property="userSrc" />
+    <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="created_user" jdbcType="INTEGER" property="createdUser" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, redis_id, user_name, nick_name, staff_no, pass_word, user_type, sex, mp, 
+    email, phone, user_src, user_status, created_user, create_date, login_ip
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bg_base_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bg_base_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.insit.mark.blog.common.persistence.model.BgBaseUser">
+    <selectKey keyProperty="userId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bg_base_user (redis_id, user_name, nick_name, 
+      staff_no, pass_word, user_type, 
+      sex, mp, email, phone, 
+      user_src, user_status, created_user, 
+      create_date, login_ip)
+    values (#{redisId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{staffNo,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, 
+      #{sex,jdbcType=INTEGER}, #{mp,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{userSrc,jdbcType=INTEGER}, #{userStatus,jdbcType=INTEGER}, #{createdUser,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{loginIp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.insit.mark.blog.common.persistence.model.BgBaseUser">
+    <selectKey keyProperty="userId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bg_base_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="redisId != null">
+        redis_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="staffNo != null">
+        staff_no,
+      </if>
+      <if test="passWord != null">
+        pass_word,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="mp != null">
+        mp,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="userSrc != null">
+        user_src,
+      </if>
+      <if test="userStatus != null">
+        user_status,
+      </if>
+      <if test="createdUser != null">
+        created_user,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="loginIp != null">
+        login_ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="redisId != null">
+        #{redisId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffNo != null">
+        #{staffNo,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null">
+        #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="mp != null">
+        #{mp,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userSrc != null">
+        #{userSrc,jdbcType=INTEGER},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.insit.mark.blog.common.persistence.model.BgBaseUser">
+    update bg_base_user
+    <set>
+      <if test="redisId != null">
+        redis_id = #{redisId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffNo != null">
+        staff_no = #{staffNo,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null">
+        pass_word = #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="mp != null">
+        mp = #{mp,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userSrc != null">
+        user_src = #{userSrc,jdbcType=INTEGER},
+      </if>
+      <if test="userStatus != null">
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createdUser != null">
+        created_user = #{createdUser,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        login_ip = #{loginIp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.insit.mark.blog.common.persistence.model.BgBaseUser">
+    update bg_base_user
+    set redis_id = #{redisId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      staff_no = #{staffNo,jdbcType=VARCHAR},
+      pass_word = #{passWord,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=INTEGER},
+      mp = #{mp,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      user_src = #{userSrc,jdbcType=INTEGER},
+      user_status = #{userStatus,jdbcType=INTEGER},
+      created_user = #{createdUser,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      login_ip = #{loginIp,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

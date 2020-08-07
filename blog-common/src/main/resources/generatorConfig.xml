@@ -13,7 +13,7 @@
         <commentGenerator> 
             <property name="suppressDate" value="true"/>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
-            <property name="suppressAllComments" value="false"/>
+            <property name="suppressAllComments" value="true"/>
 			<!-- 将数据库中表的字段描述信息添加到注释 -->
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
@@ -40,7 +40,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 生成对应表及类名 -->
-        <table tableName="user"
+        <table tableName="bg_base_user"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
@@ -50,7 +50,7 @@
         </table>
 
 
-        <table tableName="resources"
+        <table tableName="bg_base_role"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
@@ -61,7 +61,7 @@
 
 
 
-        <table tableName="role"
+        <table tableName="bg_base_user_role"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
@@ -72,7 +72,7 @@
 
 
 
-        <table tableName="user_role"
+        <table tableName="bg_base_resource"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
@@ -83,7 +83,7 @@
 
 
 
-        <table tableName="role_resources"
+        <table tableName="bg_base_role_resource"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

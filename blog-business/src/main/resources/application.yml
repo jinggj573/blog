@@ -17,7 +17,7 @@ spring:
         min-idle: 1
 server:
   servlet:
-    context-path: /blog-business
+    context-path: /blog-web
 mybatis-plus:
   mapper-locations: classpath*:com/insit/mark/blog/**/**/mapping/*Mapper.xml, classpath*:com/insit/mark/blog/business/mapper/*Mapper.xml
   type-aliases-package: com.insit.mark.blog.common.persistence.model

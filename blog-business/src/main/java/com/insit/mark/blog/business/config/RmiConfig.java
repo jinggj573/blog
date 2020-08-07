@@ -1,5 +1,6 @@
 package com.insit.mark.blog.business.config;
 
+import com.insit.mark.blog.common.business.user.ResourcesService;
 import com.insit.mark.blog.common.business.user.RoleService;
 import com.insit.mark.blog.common.business.user.UserService;
 import org.springframework.context.annotation.Bean;
@@ -15,11 +16,10 @@ import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 @Configuration
 public class RmiConfig {
 
-    @Bean("/remotingUserService")
+    /*@Bean("/remotingUserService")
     public HttpInvokerServiceExporter remotingService(UserService userService){
         HttpInvokerServiceExporter exporter =new HttpInvokerServiceExporter();
         exporter.setService(userService);
-        /*exporter.setContentType("application/xml");*/
         exporter.setServiceInterface(UserService.class);
         return exporter;
     }
@@ -32,5 +32,13 @@ public class RmiConfig {
         exporter.setServiceInterface(RoleService.class);
         return exporter;
     }
+
+    @Bean("/remotingResourceService")
+    public HttpInvokerServiceExporter remotingResourceService(ResourcesService resourcesService){
+        HttpInvokerServiceExporter exporter =new HttpInvokerServiceExporter();
+        exporter.setService(resourcesService);
+        exporter.setServiceInterface(ResourcesService.class);
+        return exporter;
+    }*/
 
 }

@@ -13,13 +13,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    @Value("${sys.path}")
-    private String pathMapping;
-
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .pathMapping(pathMapping)
+                .pathMapping("/")
                 .select()
                 .paths(PathSelectors.any())
                 .apis(RequestHandlerSelectors.basePackage("com.insit.mark.blog.web.controller"))

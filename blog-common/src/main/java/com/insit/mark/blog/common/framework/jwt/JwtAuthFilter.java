@@ -24,6 +24,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object mappedValue) {
+        log.info("==========Start JwtAuthFilter JwtAuthFilter==========");
         HttpServletResponse response = WebUtils.toHttp(servletResponse);
         if (!isLoginAttempt(servletRequest, servletResponse)) {
             writerResponse(response, CommonResultEnum.NOT_SING_IN.getCode(), "无身份认证权限标示");
